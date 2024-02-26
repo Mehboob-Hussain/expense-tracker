@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/layout.tsx", "app/page.tsx", "app/components/newTransaction.tsx", "app/components/income.jsx", "app/components/expense.tsx", "app/components/balance.jsx"],
   "exclude": ["node_modules"]
 }

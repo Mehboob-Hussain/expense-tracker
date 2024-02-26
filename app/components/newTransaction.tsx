@@ -6,6 +6,7 @@ interface Transaction {
   description: string;
   amount: number;
   category: string;
+  date: string;
 }
 
 interface Errors {
@@ -21,15 +22,19 @@ interface Props {
   onAddTransaction: (transaction: Transaction) => void;
 }
 
+const currentDate = new Date().toISOString().split('T')[0];
+
 const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleCloseModal, onAddTransaction }) => {
   const [transactionData, setTransactionData] = useState<Transaction>({
     description: '',
     amount: 0,
-    category: ''
+    category: '',
+    date: currentDate
   });
+
   const [errors, setErrors] = useState<Errors>({
     description: '',
-    amount:'',
+    amount: '',
     category: ''
   });
 
@@ -82,7 +87,6 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
     }
 
     // Create a new transaction object with the current date
-    const currentDate = new Date().toISOString().split('T')[0];
     const newTransaction: Transaction = {
       description: transactionData.description,
       amount: amount,
@@ -97,11 +101,12 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
     setTransactionData({
       description: '',
       amount: 0,
-      category: ''
+      category: '',
+      date: currentDate
     });
     setErrors({
       description: '',
-      amount: 0,
+      amount: '',
       category: ''
     });
 

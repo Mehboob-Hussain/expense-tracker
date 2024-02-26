@@ -50,7 +50,11 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
     let hasError = false;
 
     // Check for empty fields
-    const newErrors: Errors = {};
+    const newErrors: Errors = {
+      description: '',
+      amount: '',
+      category: ''
+    };
     if (!transactionData.description) {
       newErrors.description = 'Description is required';
       hasError = true;

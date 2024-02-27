@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
 
 interface Transaction {
-  id: string;
+  id: number; 
   date: string;
   description: string;
   amount: number;
@@ -36,7 +36,7 @@ const TransactionList: React.FC<Props> = ({ transactions }) => {
         </TableHead>
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow key={transaction.id} style={getRowStyle(transaction.category)}>
+            <TableRow key={transaction.id}  style={getRowStyle(transaction.category)}>
               <TableCell>{transaction.date}</TableCell>
               <TableCell>{transaction.description}</TableCell>
               <TableCell>{transaction.amount}</TableCell>
@@ -50,3 +50,4 @@ const TransactionList: React.FC<Props> = ({ transactions }) => {
 };
 
 export default TransactionList;
+

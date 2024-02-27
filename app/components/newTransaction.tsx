@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@mui/material';
 
 interface Transaction {
+  id: number;
   description: string;
   amount: number;
   category: string;
@@ -22,14 +23,15 @@ interface Props {
   onAddTransaction: (transaction: Transaction) => void;
 }
 
-const currentDate = new Date().toISOString().split('T')[0];
-
 const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleCloseModal, onAddTransaction }) => {
+  const currentDate: string = new Date().toISOString().split('T')[0];
+
   const [transactionData, setTransactionData] = useState<Transaction>({
+    id: 0,
     description: '',
     amount: 0,
     category: '',
-    date: currentDate
+    date: '',
   });
 
   const [errors, setErrors] = useState<Errors>({
@@ -38,16 +40,16 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
     category: ''
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string | undefined; value: unknown; }>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setTransactionData({
       ...transactionData,
-      [name as string]: name === 'amount' ? parseFloat(value as string) : value
+      [name]: name === 'amount' ? parseFloat(value) : value
     });
     // Clear validation error when user starts typing
     setErrors({
       ...errors,
-      [name as string]: ''
+      [name]: ''
     });
   };
 
@@ -74,7 +76,7 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
     }
 
     // Check if amount is a valid number
-    const amount = transactionData.amount;
+    const amount: number = transactionData.amount;
     if (isNaN(amount) || amount <= 0) {
       newErrors.amount = 'Amount must be a valid positive number';
       hasError = true;
@@ -88,10 +90,8 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
 
     // Create a new transaction object with the current date
     const newTransaction: Transaction = {
-      description: transactionData.description,
-      amount: amount,
-      category: transactionData.category,
-      date: currentDate
+      ...transactionData,
+      date: currentDate 
     };
 
     // Call the callback function provided by the parent component to add the new transaction
@@ -99,6 +99,7 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
 
     // Reset the form data and errors
     setTransactionData({
+      id: 0, 
       description: '',
       amount: 0,
       category: '',
@@ -119,7 +120,7 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
       <Button onClick={handleOpenModal} variant="contained" sx={{ backgroundColor: 'black', color: 'white', height: '50px' }}>Add Transaction</Button>
 
       <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>Add New Transaction</DialogTitle>
+        <DialogTitle sx={{ textAlign: 'center' }} >Add New Transaction</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -152,19 +153,19 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
               value={transactionData.category}
               label="Category"
               name="category"
-              onChange={handleChange}
+              onChange={(e) => handleChange(e as ChangeEvent<HTMLTextAreaElement | HTMLInputElement>)} // Adjusted the type here
             >
               <MenuItem value="Salary">Salary</MenuItem>
               <MenuItem value="Groceries">Groceries</MenuItem>
               <MenuItem value="Rent">Rent</MenuItem>
-              <MenuItem value="Other">Other</MenuItem>
+              <MenuItem value="Other">Other Expenses</MenuItem>
             </Select>
             {errors.category && <FormHelperText>{errors.category}</FormHelperText>}
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseModal}>Cancel</Button>
-          <Button onClick={handleAddTransaction} color="primary">Add</Button>
+          <Button variant="outlined" onClick={handleCloseModal}>Cancel</Button>
+          <Button variant="contained" onClick={handleAddTransaction} color="primary">Add</Button>
         </DialogActions>
       </Dialog>
     </>
@@ -172,3 +173,4 @@ const NewTransaction: React.FC<Props> = ({ openModal, handleOpenModal, handleClo
 };
 
 export default NewTransaction;
+

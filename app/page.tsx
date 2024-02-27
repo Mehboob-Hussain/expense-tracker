@@ -14,16 +14,19 @@ interface Transaction {
   description: string;
   amount: number;
   category: string;
-  date: string; 
+  date: string;
 }
 
 function Home() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [nextId, setNextId] = useState<number>(1); // Initialize id counter
 
   // Function to add new transaction
-  const addTransaction = (newTransaction: Transaction) => {
+  const addTransaction = (newTransaction: Omit<Transaction, 'id'>) => {
     console.log('New Transaction Data:', newTransaction);
-    setTransactions([...transactions, newTransaction]);
+    const updatedTransaction: Transaction = { ...newTransaction, id: nextId };
+    setTransactions([...transactions, updatedTransaction]);
+    setNextId(nextId + 1); // Increment id counter
   };
 
   const [openModal, setOpenModal] = useState<boolean>(false);

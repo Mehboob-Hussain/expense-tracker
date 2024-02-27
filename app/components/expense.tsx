@@ -36,7 +36,7 @@ const ExpenseCard: React.FC<ExpenseCardProps> = ({ transactions }) => {
   const balance = totalIncome - totalExpenses;
 
   return (
-    <Box display="flex" gap={2} marginBottom={2}>
+    <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={2} marginBottom={2}>
       <Card>
         <CardContent>
           <Typography>Income</Typography>
